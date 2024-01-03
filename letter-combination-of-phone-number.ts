@@ -1,33 +1,31 @@
+const phoneNumberMap: Record<string, Array<string>> = {
+  "2": ["a", "b", "c"],
+  "3": ["d", "e", "f"],
+  "4": ["g", "h", "i"],
+  "5": ["j", "k", "l"],
+  "6": ["m", "n", "o"],
+  "7": ["p", "q", "r", "s"],
+  "8": ["t", "v", "u"],
+  "9": ["w", "x", "y", "z"],
+};
+
 function letterCombinations(digits: string): string[] {
-  if (digits.length === 0) return [];
+  const combinations: Array<string> = [];
 
-  const phoneMap: string[] = [
-    "abc",
-    "def",
-    "ghi",
-    "jkl",
-    "mno",
-    "pqrs",
-    "tuv",
-    "wxyz",
-  ];
-  const output: string[] = [];
-
-  function backtrack(combination: string, nextDigits: string) {
-    console.log({ combination, nextDigits });
-    if (nextDigits.length === 0) {
-      output.push(combination);
-    } else {
-      const letters: string = phoneMap[parseInt(nextDigits[0]) - 2];
-      for (const letter of letters) {
-        backtrack(combination + letter, nextDigits.slice(1));
-      }
+  const backtrack = (idx: number, combination: string) => {
+    if (combination.length === digits.length) {
+      combinations.push(combination);
+      return;
     }
-  }
 
-  backtrack("", digits);
-  return output;
+    for (let digit of phoneNumberMap[digits[idx]]) {
+      backtrack(idx + 1, combination + digit);
+    }
+  };
+
+  if (digits && digits.length) backtrack(0, "");
+
+  return combinations;
 }
 
-// Practice and understand this tomorrow
-console.log(letterCombinations("2345"));
+console.log(letterCombinations("23"));
